@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/strow_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/avatar"/>
+
+        <ProgressBar
+            android:id="@+id/strow_progressBar"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_width="70dp"
+            android:visibility="gone"
+            android:layout_height="70dp" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/strow_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="my name"
+            android:textSize="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            />
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="id:"/>
+            <TextView
+                android:id="@+id/strow_id"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="wrewrtewrt"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/strow_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:focusable="false"
+        android:layout_margin="10dp"
+        />
+
+</LinearLayout>
