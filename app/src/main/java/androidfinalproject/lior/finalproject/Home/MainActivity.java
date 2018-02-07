@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import androidfinalproject.lior.finalproject.Helper.BottomNavigationViewHelper;
 import androidfinalproject.lior.finalproject.Model.Post;
+import androidfinalproject.lior.finalproject.Profile.ProfileActivity;
 import androidfinalproject.lior.finalproject.R;
 import androidfinalproject.lior.finalproject.SectionPageAdapter;
 
@@ -21,11 +22,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         setContentView(R.layout.activity_main);
         setupNevigationBar();
 
-        MainFragment listFragment = MainFragment.newInstance();
-        FragmentTransaction tran = getSupportFragmentManager().beginTransaction();
-        tran.add(R.id.container,listFragment,"TAG");
-        tran.commit();
+        getMainFragment();
+
+
     }
+
+    private void getMainFragment()
+    {
+        MainFragment listFragment = MainFragment.newInstance();
+        FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,listFragment);
+        transaction.addToBackStack("MainFragment");
+        transaction.commit();
+    }
+
 
     private void setupNevigationBar()
     {

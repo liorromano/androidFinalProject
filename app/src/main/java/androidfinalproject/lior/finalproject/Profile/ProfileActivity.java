@@ -5,12 +5,15 @@ package androidfinalproject.lior.finalproject.Profile;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidfinalproject.lior.finalproject.Helper.BottomNavigationViewHelper;
+import androidfinalproject.lior.finalproject.Home.MainActivity;
+import androidfinalproject.lior.finalproject.Home.MainFragment;
 import androidfinalproject.lior.finalproject.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -19,9 +22,18 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        setupToolBar();
-        //setupNevigationBar();
+        setupNevigationBar();
 
+        getProfileFragment();
+    }
+
+    private void getProfileFragment()
+    {
+        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,profileFragment);
+        transaction.addToBackStack("ProfileFragment");
+        transaction.commit();
     }
 
     private void setupToolBar()

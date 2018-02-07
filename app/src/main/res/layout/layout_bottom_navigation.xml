@@ -12,7 +12,7 @@
            android:layout_height="wrap_content"
            android:id="@+id/Bottom_navigation_icon"
            app:menu = "@menu/bottom_navigation_icon"
-           android:background="@drawable/botton_navigation_border">
+           android:background="@drawable/bottom_navigation_border">
 
        </android.support.design.widget.BottomNavigationView>
 
