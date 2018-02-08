@@ -143,21 +143,16 @@ public class MainFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null){
                 convertView = inflater.inflate(R.layout.posts_list_row,null);
-                CheckBox cb = (CheckBox) convertView.findViewById(R.id.strow_cb);
-                cb.setOnClickListener(new CBListener());
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.strow_name);
-            TextView id = (TextView) convertView.findViewById(R.id.strow_id);
-            CheckBox cb = (CheckBox) convertView.findViewById(R.id.strow_cb);
-            final ImageView imageView = (ImageView) convertView.findViewById(R.id.strow_image);
+            TextView name = (TextView) convertView.findViewById(R.id.namerow_text);
+            TextView description = (TextView) convertView.findViewById(R.id.descriptionrow_text);
+            final ImageView imageView = (ImageView) convertView.findViewById(R.id.postrow_image);
             final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.strow_progressBar);
 
             final Post emp = postsList.get(position);
             name.setText(emp.name);
-            id.setText(emp.id);
-            cb.setChecked(emp.checked);
-            cb.setTag(position);
+            description.setText(emp.id);
             imageView.setTag(emp.imageUrl);
             //imageView.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
 
