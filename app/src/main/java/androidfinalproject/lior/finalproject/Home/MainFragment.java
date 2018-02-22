@@ -1,5 +1,6 @@
 package androidfinalproject.lior.finalproject.Home;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -139,6 +140,7 @@ public class MainFragment extends Fragment {
             }
         }
 
+        @SuppressLint("NewApi")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null){
@@ -154,7 +156,7 @@ public class MainFragment extends Fragment {
             name.setText(emp.name);
             description.setText(emp.id);
             imageView.setTag(emp.imageUrl);
-            //imageView.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
+            imageView.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
 
             if (emp.imageUrl != null && !emp.imageUrl.isEmpty() && !emp.imageUrl.equals("")){
                 progressBar.setVisibility(View.VISIBLE);

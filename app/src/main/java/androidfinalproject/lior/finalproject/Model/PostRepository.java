@@ -35,12 +35,12 @@ public class PostRepository {
 
 
     PostRepository(){
-        for(int i=0;i<5;i++) {
+       /* for(int i=0;i<5;i++) {
             Post emp = new Post();
             emp.name = "KUKU" + i;
             emp.id = ""+i;
             PostFirebase.addPost(emp);
-        }
+        }*/
     }
 
     public interface GetImageListener{
@@ -48,6 +48,9 @@ public class PostRepository {
         void onFail();
     }
 
+    public void addPost(Post post) {
+        PostFirebase.addPost(post);
+    }
 
     public LiveData<List<Post>> getPostsList() {
         synchronized (this) {
@@ -99,7 +102,28 @@ public class PostRepository {
     }
 
 
+    public interface SaveImageListener {
+        void complete(String url);
+        void fail();
+    }
 
+    public void saveImage(final Bitmap imageBmp, final String name, final SaveImageListener listener) {
+        PostFirebase.saveImage(imageBmp, name, new SaveImageListener() {
+            @Override
+            public void complete(String url) {
+                String fileName = URLUtil.guessFileName(url, null, null);
+                saveImageToFile(imageBmp,fileName);
+                listener.complete(url);
+            }
+
+            @Override
+            public void fail() {
+                listener.fail();
+            }
+        });
+
+
+    }
 
     public void getImage(final String url, final GetImageListener listener) {
         //check if image exsist localy

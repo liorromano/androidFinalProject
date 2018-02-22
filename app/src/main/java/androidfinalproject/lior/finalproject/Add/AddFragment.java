@@ -1,33 +1,28 @@
 package androidfinalproject.lior.finalproject.Add;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidfinalproject.lior.finalproject.Model.Post;
+import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.R;
 
 import static android.app.Activity.RESULT_OK;
-import static android.support.constraint.solver.widgets.ConstraintWidget.GONE;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 
 /**
  * Created by Lior on 07/02/2018.
@@ -61,7 +56,7 @@ public class AddFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
         progressBar = (ProgressBar) view.findViewById(R.id.addProgressBar);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(GONE);
 
         final EditText description = (EditText) view.findViewById(R.id.add_editText);
 
@@ -70,42 +65,41 @@ public class AddFragment extends Fragment {
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {/*
+            public void onClick(View v) {
 
-                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(VISIBLE);
 
                 Log.d("TAG","Btn Save click");
-                final Student st = new Student();
-                st.id = idEt.getText().toString();
-                st.name = nameEt.getText().toString();
-                st.imageUrl = "";
-                st.checked = false;
+                final Post post = new Post();
+                post.id = "7";
+                post.name = "lior";
+                post.imageUrl = "";
                 if (imageBitmap != null) {
-                    Model.instace.saveImage(imageBitmap, st.id + ".jpeg", new Model.SaveImageListener() {
+                    PostRepository.instance.saveImage(imageBitmap, post.id + ".jpeg", new PostRepository.SaveImageListener() {
                         @Override
                         public void complete(String url) {
-                            st.imageUrl = url;
-                            Model.instace.addStudent(st);
-                            setResult(RESAULT_SUCCESS);
+                            post.imageUrl = url;
+                            PostRepository.instance.addPost(post);
+                            getActivity().setResult(RESAULT_SUCCESS);
                             progressBar.setVisibility(GONE);
-                            finish();
+                            getActivity().finish();
                         }
 
                         @Override
                         public void fail() {
                             //notify operation fail,...
-                            setResult(RESAULT_SUCCESS);
+                            getActivity().setResult(RESAULT_SUCCESS);
                             progressBar.setVisibility(GONE);
-                            finish();
+                            getActivity().finish();
                         }
                     });
                 }else{
-                    Model.instace.addStudent(st);
-                    setResult(RESAULT_SUCCESS);
+                    PostRepository.instance.addPost(post);
+                    getActivity().setResult(RESAULT_SUCCESS);
                     progressBar.setVisibility(GONE);
-                    finish();
+                    getActivity().finish();
                 }
-            */}
+            }
         });
 
         imageView = (ImageView) view.findViewById(R.id.add_image);

@@ -13,7 +13,6 @@ public class MainViewModel extends ViewModel {
     private LiveData<List<Post>> posts;
 
     public MainViewModel() {
-        //employees = PostRepository.instance.getEmployeesList();
         posts = PostRepository.instance.getAllPosts();
     }
 

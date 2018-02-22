@@ -17,9 +17,11 @@ public class Post {
     public String id;
 
     public String name;
-    public boolean checked;
     public String imageUrl;
     public long lastUpdated;
+    public String uId;
+    public String description;
+
 
     public String getId() {
         return id;
@@ -37,12 +39,20 @@ public class Post {
         this.name = name;
     }
 
-    public boolean isChecked() {
-        return checked;
+    public String getuId() {
+        return uId;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getImageUrl() {
@@ -66,8 +76,9 @@ public class Post {
         result.put("id", id);
         result.put("name", name);
         result.put("imageUrl", imageUrl);
-        result.put("checked", checked);
         result.put("lastUpdated", lastUpdated);
+        result.put("uId", uId);
+        result.put("description", description);
         return result;
     }
 }
