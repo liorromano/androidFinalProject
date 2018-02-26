@@ -19,7 +19,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".Home.MainActivity">
+    <activity android:name=".Helper.PageChooserActivity">
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -27,10 +27,11 @@
     </intent-filter>
 </activity>
     <activity android:name=".Add.AddActivity"/>
-    <activity android:name=".Profile.ProfileActivity"/>
-    <activity android:name=".Login.RegisterActivity"/>
-    <activity android:name=".Login.LoginActivity"/>
 
+    <activity android:name=".Login.RegisterActivity"/>
+    <activity android:name=".Home.MainActivity"/>
+    <activity android:name=".Profile.ProfileActivity"/>
+    <activity android:name=".Login.LoginActivity"/>
 </application>
 
 </manifest>

@@ -61,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     @Override
+    public void onBackPressed() {
+       ///do nothing
+    }
+
+    @Override
     public void onItemSelected(Post post) {
         Log.d("TAG", "clicked row");
     }

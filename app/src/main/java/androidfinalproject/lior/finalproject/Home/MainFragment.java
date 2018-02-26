@@ -26,6 +26,8 @@ import java.util.List;
 
 import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
+import androidfinalproject.lior.finalproject.Model.User;
+import androidfinalproject.lior.finalproject.Model.UserRepository;
 import androidfinalproject.lior.finalproject.R;
 
 
@@ -149,23 +151,23 @@ public class MainFragment extends Fragment {
 
             TextView name = (TextView) convertView.findViewById(R.id.namerow_text);
             TextView description = (TextView) convertView.findViewById(R.id.descriptionrow_text);
-            final ImageView imageView = (ImageView) convertView.findViewById(R.id.postrow_image);
+            final ImageView postImage = (ImageView) convertView.findViewById(R.id.postrow_image);
             final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.strow_progressBar);
+            final ImageView profileImage = (ImageView) convertView.findViewById(R.id.list_row_profile_image);
+            final Post post = postsList.get(position);
+            name.setText(post.name);
+            description.setText(post.description);
+            postImage.setTag(post.imageUrl);
+            postImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
 
-            final Post emp = postsList.get(position);
-            name.setText(emp.name);
-            description.setText(emp.id);
-            imageView.setTag(emp.imageUrl);
-            imageView.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
-
-            if (emp.imageUrl != null && !emp.imageUrl.isEmpty() && !emp.imageUrl.equals("")){
+            if (post.imageUrl != null && !post.imageUrl.isEmpty() && !post.imageUrl.equals("")){
                 progressBar.setVisibility(View.VISIBLE);
-                PostRepository.instance.getImage(emp.imageUrl, new PostRepository.GetImageListener() {
+                PostRepository.instance.getImage(post.imageUrl, new PostRepository.GetImageListener() {
                     @Override
                     public void onSuccess(Bitmap image) {
-                        String tagUrl = imageView.getTag().toString();
-                        if (tagUrl.equals(emp.imageUrl)) {
-                            imageView.setImageBitmap(image);
+                        String tagUrl = postImage.getTag().toString();
+                        if (tagUrl.equals(post.imageUrl)) {
+                            postImage.setImageBitmap(image);
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -176,6 +178,38 @@ public class MainFragment extends Fragment {
                     }
                 });
             }
+
+            UserRepository.instance.getUser(post.uId, new UserRepository.GetUserCallback() {
+                @Override
+                public void onComplete(final User user) {
+
+                    if (user.imageUrl != null && !user.imageUrl.isEmpty() && !user.imageUrl.equals("")){
+                        profileImage.setTag(user.imageUrl);
+                        profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
+                        UserRepository.instance.getImage(user.imageUrl, new PostRepository.GetImageListener() {
+                            @Override
+                            public void onSuccess(Bitmap image) {
+                                String tagUrl =  profileImage.getTag().toString();
+                                if (tagUrl.equals(user.imageUrl)) {
+                                    profileImage.setImageBitmap(image);
+
+                                }
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+
             return convertView;
         }
     }
@@ -211,4 +245,5 @@ public class MainFragment extends Fragment {
             super.onPostExecute(aDouble);
         }
     }
+
 }

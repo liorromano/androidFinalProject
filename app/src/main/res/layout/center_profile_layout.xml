@@ -1,4 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,20 +23,24 @@
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="25">
+
                     <ImageView
+                        android:id="@+id/ivProfileImage"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:id="@+id/ivProfileImage"/>
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="13dp"
+                        app:srcCompat="@drawable/avatar" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="75"
-                    android:layout_marginEnd="30dp">
-                    <include layout="@layout/top_profile"/>
+                    android:layout_marginEnd="30dp"
+                    android:layout_weight="75">
+
+                    <include layout="@layout/top_profile" />
 
                 </RelativeLayout>
 
@@ -53,21 +58,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:text="Name" />
+                    android:text="Name"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/line2">
-                <GridView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gridView"
-                    android:numColumns="3"
-                    android:gravity="center"
-                    android:verticalSpacing="1dp"
-                    android:horizontalSpacing="1dp"
-                    android:stretchMode="columnWidth"></GridView>
+                <include layout="@layout/layout_profile_list" />
 
             </RelativeLayout>
         </RelativeLayout>

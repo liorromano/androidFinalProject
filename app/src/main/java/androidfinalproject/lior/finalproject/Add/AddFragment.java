@@ -1,11 +1,13 @@
 package androidfinalproject.lior.finalproject.Add;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidfinalproject.lior.finalproject.Login.RegisterActivity;
 import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
+import androidfinalproject.lior.finalproject.Model.User;
+import androidfinalproject.lior.finalproject.Model.UserRepository;
 import androidfinalproject.lior.finalproject.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -61,7 +66,6 @@ public class AddFragment extends Fragment {
         final EditText description = (EditText) view.findViewById(R.id.add_editText);
 
         Button saveBtn = (Button) view.findViewById(R.id.add_saveBtn);
-        Button cancelBtn = (Button) view.findViewById(R.id.add_cancelBtn);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,37 +75,56 @@ public class AddFragment extends Fragment {
 
                 Log.d("TAG","Btn Save click");
                 final Post post = new Post();
-                post.id = "7";
-                post.name = "lior";
-                post.imageUrl = "";
-                if (imageBitmap != null) {
-                    PostRepository.instance.saveImage(imageBitmap, post.id + ".jpeg", new PostRepository.SaveImageListener() {
-                        @Override
-                        public void complete(String url) {
-                            post.imageUrl = url;
-                            PostRepository.instance.addPost(post);
-                            getActivity().setResult(RESAULT_SUCCESS);
-                            progressBar.setVisibility(GONE);
-                            getActivity().finish();
-                        }
+                UserRepository.instance.whoLoggedIn(new UserRepository.whoLoggedInListener() {
+                    @Override
+                    public void answer(final String uid) {
+                        UserRepository.instance.getUser(uid, new UserRepository.GetUserCallback() {
+                            @Override
+                            public void onComplete(User user) {
 
-                        @Override
-                        public void fail() {
-                            //notify operation fail,...
-                            getActivity().setResult(RESAULT_SUCCESS);
-                            progressBar.setVisibility(GONE);
-                            getActivity().finish();
-                        }
-                    });
-                }else{
-                    PostRepository.instance.addPost(post);
-                    getActivity().setResult(RESAULT_SUCCESS);
-                    progressBar.setVisibility(GONE);
-                    getActivity().finish();
-                }
+                                int numberOfPosts= user.getNumberOfPosts();
+                                post.id = uid+numberOfPosts;
+                                post.uId = uid;
+                                post.name = user.getUserName();
+                                post.description = description.getText().toString();
+
+                                post.imageUrl = "";
+                                if (imageBitmap != null) {
+                                    PostRepository.instance.saveImage(imageBitmap, post.id + ".jpeg", new PostRepository.SaveImageListener() {
+                                        @Override
+                                        public void complete(String url) {
+                                            post.imageUrl = url;
+                                            PostRepository.instance.addPost(post);
+                                            getActivity().setResult(RESAULT_SUCCESS);
+                                            UserRepository.instance.updateUserPosts(uid);
+                                            progressBar.setVisibility(GONE);
+                                            getActivity().finish();
+                                        }
+
+                                        @Override
+                                        public void fail() {
+                                            //notify operation fail,...
+                                            getActivity().setResult(RESAULT_SUCCESS);
+                                            progressBar.setVisibility(GONE);
+                                            getActivity().finish();
+                                        }
+                                    });
+                                }else {
+                                    progressBar.setVisibility(GONE);
+                                    alert("Please choose picture");
+                                }
+                            }
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        });
+
+                    }
+                });
+
             }
         });
-
         imageView = (ImageView) view.findViewById(R.id.add_image);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,5 +152,18 @@ public class AddFragment extends Fragment {
         }
     }
 
+    private void alert(String message)
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Error");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 
 }

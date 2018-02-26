@@ -51,5 +51,10 @@ public class AddActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        ///do nothing
+    }
 }
 

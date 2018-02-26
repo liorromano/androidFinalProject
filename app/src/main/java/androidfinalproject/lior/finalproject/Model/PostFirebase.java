@@ -85,6 +85,7 @@ public class PostFirebase {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("posts");
         myRef.child(post.id).setValue(json);
+
     }
 
     public static void saveImage(Bitmap imageBmp, String name, final PostRepository.SaveImageListener listener){
@@ -114,7 +115,7 @@ public class PostFirebase {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference httpsReference = storage.getReferenceFromUrl(url);
         final long ONE_MEGABYTE = 1024 * 1024;
-        httpsReference.getBytes(3* ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        httpsReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap image = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
@@ -128,6 +129,5 @@ public class PostFirebase {
             }
         });
     }
-
 
 }

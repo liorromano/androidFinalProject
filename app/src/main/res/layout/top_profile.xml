@@ -21,29 +21,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_posts" />
 
-        <TextView
-            android:id="@+id/tvEditProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+        <Button
+            android:id="@+id/editProfile_btn"
+            android:layout_width="110dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bottom_navigation_border"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:text="Edit Profile"
             android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ProfileName" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView_posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -55,6 +51,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/logout_Btn"
+            android:layout_width="110dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bottom_navigation_border"
+            android:text="Logout"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ProfileName" />
     </android.support.constraint.ConstraintLayout>
 
 </merge>

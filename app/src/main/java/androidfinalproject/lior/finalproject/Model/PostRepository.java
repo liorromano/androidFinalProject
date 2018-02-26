@@ -52,22 +52,7 @@ public class PostRepository {
         PostFirebase.addPost(post);
     }
 
-    public LiveData<List<Post>> getPostsList() {
-        synchronized (this) {
-            if (postsListliveData == null) {
-                postsListliveData = new MutableLiveData<List<Post>>();
-                PostFirebase.getAllPostsAndObserve(new PostFirebase.Callback<List<Post>>() {
 
-                    @Override
-                    public void onComplete(List<Post> data) {
-                        if (data != null) postsListliveData.setValue(data);
-                        Log.d("TAG", "got post data");
-                    }
-                });
-            }
-        }
-        return postsListliveData;
-    }
 
     public LiveData<List<Post>> getAllPosts() {
         synchronized (this) {
@@ -205,7 +190,7 @@ public class PostRepository {
     class MyTask extends AsyncTask<List<Post>,String,List<Post>> {
         @Override
         protected List<Post> doInBackground(List<Post>[] lists) {
-            Log.d("TAG", "starting updateEmployeeDataInLocalStorage in thread");
+            Log.d("TAG", "starting updatePostDataInLocalStorage in thread");
             if (lists.length > 0) {
                 List<Post> data = lists[0];
                 long lastUpdateDate = 0;
@@ -231,7 +216,7 @@ public class PostRepository {
                 }
                 //return the complete student list to the caller
                 List<Post> postList = AppLocalStore.db.postDao().getAll();
-                Log.d("TAG", "finish updateEmployeeDataInLocalStorage in thread");
+                Log.d("TAG", "finish updatePostDataInLocalStorage in thread");
 
                 return postList;
             }
@@ -242,7 +227,7 @@ public class PostRepository {
         protected void onPostExecute(List<Post> posts) {
             super.onPostExecute(posts);
             postsListliveData.setValue(posts);
-            Log.d("TAG","update updateEmployeeDataInLocalStorage in main thread");
+            Log.d("TAG","update updatePostDataInLocalStorage in main thread");
             Log.d("TAG", "got items from local db: " + posts.size());
 
         }

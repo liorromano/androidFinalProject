@@ -14,9 +14,10 @@ import android.view.MenuItem;
 import androidfinalproject.lior.finalproject.Helper.BottomNavigationViewHelper;
 import androidfinalproject.lior.finalproject.Home.MainActivity;
 import androidfinalproject.lior.finalproject.Home.MainFragment;
+import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.R;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,16 @@ public class ProfileActivity extends AppCompatActivity {
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        ///do nothing
+    }
+
+    @Override
+    public void onItemSelected(Post post) {
 
     }
 }
