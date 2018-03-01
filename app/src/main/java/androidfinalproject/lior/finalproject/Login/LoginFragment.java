@@ -64,9 +64,10 @@ public class LoginFragment extends Fragment{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(VISIBLE);
-                if(email.getText()!= null && password.getText()!=null)
+
+                if((!email.getText().toString().equals("")) && (!password.getText().toString().equals("")))
                 {
+                    progressBar.setVisibility(VISIBLE);
                     UserRepository.instance.login(email.getText().toString(), password.getText().toString(), new UserRepository.LoginListener() {
                         @Override
                         public void answer(Boolean answer) {
@@ -79,20 +80,14 @@ public class LoginFragment extends Fragment{
                             else
                             {
                                 progressBar.setVisibility(GONE);
-
-                                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                                alertDialog.setTitle("Error");
-                                alertDialog.setMessage("Username or password are incorrect");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
+                                alert("Username or password are incorrect");
                             }
                         }
                     });
+                }
+                else
+                {
+                    alert("please fill fields");
                 }
             }
         });
@@ -100,4 +95,17 @@ public class LoginFragment extends Fragment{
         return view;
     }
 
+    private void alert(String message)
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Error");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 }

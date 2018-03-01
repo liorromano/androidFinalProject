@@ -30,4 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        ///do nothing
+    }
 }

@@ -29,6 +29,7 @@ import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.Model.User;
 import androidfinalproject.lior.finalproject.Model.UserRepository;
+import androidfinalproject.lior.finalproject.Profile.PostDetailActivity;
 import androidfinalproject.lior.finalproject.Profile.PostDetailFragment;
 import androidfinalproject.lior.finalproject.R;
 
@@ -72,17 +73,12 @@ public class OtherProfileFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Post item = profilePostsList.get(position);
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                Fragment postFragment = new PostDetailFragment();//the fragment you want to show
+                Intent intent = new Intent(getActivity(),PostDetailActivity.class);
                 Bundle bundle = new Bundle();
+                Post item = profilePostsList.get(position);
                 bundle.putString("key",item.getId());
-                postFragment.setArguments(bundle);
-
-                fragmentTransaction
-                        .replace(R.id.container, postFragment);//R.id.content_frame is the layout you want to replace
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                intent.putExtras(bundle);
+                startActivity(intent);
 
             }
 

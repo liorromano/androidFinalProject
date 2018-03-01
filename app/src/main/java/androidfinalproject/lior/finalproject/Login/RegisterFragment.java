@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import androidfinalproject.lior.finalproject.Model.User;
 import androidfinalproject.lior.finalproject.Model.UserRepository;
 import androidfinalproject.lior.finalproject.R;
@@ -86,6 +89,10 @@ public class RegisterFragment extends Fragment{
                 if(password.getText().toString().length() < 6)
                 {
                     alert("password must contains 6 digits");
+                }
+                if(!isEmailValid(email.getText().toString()))
+                {
+                    alert("email not valid");
                 }
                 else {
                     progressBar.setVisibility(VISIBLE);
@@ -160,6 +167,14 @@ public class RegisterFragment extends Fragment{
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
         }
+    }
+
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     private void alert(String message)

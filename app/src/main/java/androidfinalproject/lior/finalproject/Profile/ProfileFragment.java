@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Post item = profilePostsList.get(position);
+               /* Post item = profilePostsList.get(position);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment postFragment = new PostDetailFragment();//the fragment you want to show
                 Bundle bundle = new Bundle();
@@ -82,7 +82,14 @@ public class ProfileFragment extends Fragment {
                 fragmentTransaction
                         .replace(R.id.container, postFragment);//R.id.content_frame is the layout you want to replace
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
+
+                Intent intent = new Intent(getActivity(),PostDetailActivity.class);
+                Bundle bundle = new Bundle();
+                Post item = profilePostsList.get(position);
+                bundle.putString("key",item.getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
 
             }
 

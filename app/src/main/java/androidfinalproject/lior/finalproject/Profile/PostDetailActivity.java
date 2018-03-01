@@ -10,12 +10,16 @@ import androidfinalproject.lior.finalproject.R;
  * Created by Lior on 01/03/2018.
  */
 
-public class EditProfileActivity extends AppCompatActivity{
+public class PostDetailActivity extends AppCompatActivity {
+
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_post_detail);
+
+        bundle = getIntent().getExtras();
 
         getProfileFragment();
     }
@@ -23,10 +27,11 @@ public class EditProfileActivity extends AppCompatActivity{
 
     private void getProfileFragment()
     {
-        EditProfileFragment editProfileFragment = EditProfileFragment.newInstance();
-        FragmentTransaction transaction = EditProfileActivity.this.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container,editProfileFragment);
-        transaction.addToBackStack("EditProfileFragment");
+        PostDetailFragment postDetailFragment = PostDetailFragment.newInstance();
+        postDetailFragment.setArguments(bundle);
+        FragmentTransaction transaction = PostDetailActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,postDetailFragment);
+        transaction.addToBackStack("PostDetailFragment");
         transaction.commit();
     }
 
@@ -34,5 +39,6 @@ public class EditProfileActivity extends AppCompatActivity{
     public void onBackPressed() {
         ///do nothing
     }
+
 
 }

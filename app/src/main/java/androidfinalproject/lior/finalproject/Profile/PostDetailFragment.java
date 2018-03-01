@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -28,6 +29,12 @@ public class PostDetailFragment extends Fragment{
     ProgressBar progressBar;
     String myValue;
 
+
+    public static PostDetailFragment newInstance() {
+        PostDetailFragment fragment = new PostDetailFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,14 @@ public class PostDetailFragment extends Fragment{
 
         progressBar = view.findViewById(R.id.post_detail_progressBar);
         progressBar.setVisibility(View.GONE);
+
+        Button exit = (Button) view.findViewById(R.id.post_detail_exitBtn);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
 
         PostRepository.instance.getPostByPostId(myValue, new PostRepository.GetPostListener() {
             @Override
