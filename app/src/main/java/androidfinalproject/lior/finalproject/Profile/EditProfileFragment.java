@@ -1,4 +1,4 @@
-package androidfinalproject.lior.finalproject.Login;
+package androidfinalproject.lior.finalproject.Profile;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,22 +24,24 @@ import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-
 /**
- * Created by Lior on 22/02/2018.
+ * Created by Lior on 01/03/2018.
  */
 
-public class RegisterFragment extends Fragment{
+public class EditProfileFragment extends Fragment {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    final static int RESAULT_SUCCESS = 0;
 
-    ProgressBar progressBar;
     ImageView imageView;
     Bitmap imageBitmap;
+    ProgressBar progressBar;
 
-    public static RegisterFragment newInstance() {
-        RegisterFragment fragment = new RegisterFragment();
+    public static EditProfileFragment newInstance() {
+        EditProfileFragment fragment = new EditProfileFragment();
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,66 +52,31 @@ public class RegisterFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
-
-        progressBar = view.findViewById(R.id.register_progressBar);
+        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        progressBar = (ProgressBar) view.findViewById(R.id.editProfile_ProgressBar);
         progressBar.setVisibility(GONE);
 
-        final EditText username = (EditText) view.findViewById(R.id.register_username_txt);
-        final EditText email = (EditText) view.findViewById(R.id.register_email_txt);
-        final EditText password = (EditText) view.findViewById(R.id.register_password_txt);
 
-        Button cancel = (Button) view.findViewById(R.id.register_cancel_Btn);
-        cancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //onBackPressed();
-                getActivity().finish();
-            }
-        });
-
-        imageView = (ImageView) view.findViewById(R.id.register_profile_picture);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
-
-        Button signUp = (Button) view.findViewById(R.id.register_signUp_Btn);
-        signUp.setOnClickListener(new View.OnClickListener() {
+        Button saveBtn = (Button) view.findViewById(R.id.editProfile_saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-            if((!username.getText().toString().equals("")) && (!email.getText().toString().equals("")) && (!password.getText().toString().equals(""))){
-                if(password.getText().toString().length() < 6)
-                {
-                    alert("password must contains 6 digits");
-                }
-                else {
-                    progressBar.setVisibility(VISIBLE);
-                    Log.d("TAG", "Btn SignUp click");
+                progressBar.setVisibility(VISIBLE);
 
-                    final User user = new User();
-                    user.setUserName(username.getText().toString());
-                    user.imageUrl = "";
-
-                    UserRepository.instance.addUserAuth(password.getText().toString(), email.getText().toString(), new UserRepository.whoLoggedInListener() {
-                        @Override
-                        public void answer(final String answer) {
-                            if(answer == null)
-                            {
-                                progressBar.setVisibility(GONE);
-                                alert("email is already exists");
-                            }
-                            else {
+                Log.d("TAG","Btn Save click");
+                UserRepository.instance.whoLoggedIn(new UserRepository.whoLoggedInListener() {
+                    @Override
+                    public void answer(final String uid) {
+                        UserRepository.instance.getUser(uid, new UserRepository.GetUserCallback() {
+                            @Override
+                            public void onComplete(final User user) {
+                                String uId = user.getuId();
                                 if (imageBitmap != null) {
-                                    UserRepository.instance.saveImage(imageBitmap, answer + ".jpeg", new UserRepository.SaveImageListener() {
+                                    UserRepository.instance.saveImage(imageBitmap, uId + ".jpeg", new UserRepository.SaveImageListener() {
                                         @Override
                                         public void complete(String url) {
-                                            user.imageUrl = url;
-                                            UserRepository.instance.addUser(user, answer);
+                                            UserRepository.instance.updateUserImageUrl(url,uid);
                                             getActivity().setResult(RESAULT_SUCCESS);
                                             progressBar.setVisibility(GONE);
                                             getActivity().finish();
@@ -123,29 +90,45 @@ public class RegisterFragment extends Fragment{
                                             getActivity().finish();
                                         }
                                     });
-                                } else {
-                                    UserRepository.instance.addUser(user, answer);
-                                    getActivity().setResult(RESAULT_SUCCESS);
+                                }else {
                                     progressBar.setVisibility(GONE);
-                                    getActivity().finish();
+                                    alert("Please choose picture");
                                 }
                             }
-                        }
-                    });
+                            @Override
+                            public void onCancel() {
 
-                }
+                            }
+                        });
+
+                    }
+                });
+
             }
-            else
-            {
-                alert("Please fill fields");
-            }
-        }
         });
+
+        Button cancel = (Button) view.findViewById(R.id.editProfile_cancelBtn);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        imageView = (ImageView) view.findViewById(R.id.editProfile_image);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+
         return view;
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    final static int RESAULT_SUCCESS = 0;
+
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -153,6 +136,7 @@ public class RegisterFragment extends Fragment{
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -175,6 +159,5 @@ public class RegisterFragment extends Fragment{
                 });
         alertDialog.show();
     }
-
 
 }

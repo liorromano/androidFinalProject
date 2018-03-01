@@ -50,6 +50,25 @@ public class UserFirebase {
         });
     }
 
+    public static void updateUserImageUrl(final String url, final String uid) {
+        getUser(uid, new GetUserCallback() {
+            @Override
+            public void onComplete(User user) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("users");
+                try {
+                    myRef.child(uid).child("imageUrl").setValue(url);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
     public interface Callback<T> {
         void onComplete(T data);
     }

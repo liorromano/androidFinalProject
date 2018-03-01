@@ -1,28 +1,31 @@
 package androidfinalproject.lior.finalproject.Login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import androidfinalproject.lior.finalproject.Add.AddFragment;
+import androidfinalproject.lior.finalproject.Home.MainActivity;
+import androidfinalproject.lior.finalproject.Model.UserRepository;
 import androidfinalproject.lior.finalproject.R;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 /**
- * Created by Lior on 21/02/2018.
+ * Created by Lior on 01/03/2018.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment{
 
-    static final int REQUEST_ADD_ID = 1;
+
     ProgressBar progressBar;
 
     public static LoginFragment newInstance() {
@@ -36,12 +39,14 @@ public class LoginFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        final EditText email = (EditText) view.findViewById(R.id.login_email_txt);
+        final EditText password = (EditText) view.findViewById(R.id.login_password_txt);
 
         progressBar = view.findViewById(R.id.login_progressBar);
         progressBar.setVisibility(GONE);
@@ -50,11 +55,49 @@ public class LoginFragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(VISIBLE);
                 Intent intent = new Intent(getActivity(),RegisterActivity.class);
                 startActivity(intent);
             }
         });
+
+        Button login = (Button) view.findViewById(R.id.login_btn);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(VISIBLE);
+                if(email.getText()!= null && password.getText()!=null)
+                {
+                    UserRepository.instance.login(email.getText().toString(), password.getText().toString(), new UserRepository.LoginListener() {
+                        @Override
+                        public void answer(Boolean answer) {
+                            if(answer == true)
+                            {
+                                progressBar.setVisibility(GONE);
+                                Intent intent = new Intent(getActivity(),MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                progressBar.setVisibility(GONE);
+
+                                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                                alertDialog.setTitle("Error");
+                                alertDialog.setMessage("Username or password are incorrect");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
         return view;
     }
+
 }

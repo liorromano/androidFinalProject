@@ -1,6 +1,5 @@
 package androidfinalproject.lior.finalproject.Add;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import androidfinalproject.lior.finalproject.Login.RegisterActivity;
 import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.Model.User;
@@ -125,7 +123,7 @@ public class AddFragment extends Fragment {
 
             }
         });
-        imageView = (ImageView) view.findViewById(R.id.add_image);
+        imageView = (ImageView) view.findViewById(R.id.editProfile_image);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

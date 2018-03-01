@@ -211,4 +211,9 @@ public class UserRepository {
         }
         return bitmap;
     }
+
+    public void updateUserImageUrl(String url, String uid)
+    {
+        UserFirebase.updateUserImageUrl(url,uid);
+    }
 }

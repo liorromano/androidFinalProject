@@ -29,6 +29,7 @@ import androidfinalproject.lior.finalproject.Home.MainActivity;
 import androidfinalproject.lior.finalproject.Home.MainFragment;
 import androidfinalproject.lior.finalproject.Home.MainViewModel;
 import androidfinalproject.lior.finalproject.Login.LoginActivity;
+import androidfinalproject.lior.finalproject.Login.RegisterActivity;
 import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.Model.User;
@@ -128,6 +129,15 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 UserRepository.instance.logout();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button editProfile = (Button) view.findViewById(R.id.editProfile_btn);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
                 startActivity(intent);
             }
         });
