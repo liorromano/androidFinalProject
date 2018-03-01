@@ -15,7 +15,7 @@ import androidfinalproject.lior.finalproject.Profile.ProfileActivity;
 import androidfinalproject.lior.finalproject.R;
 import androidfinalproject.lior.finalproject.SectionPageAdapter;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener, OtherProfileFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

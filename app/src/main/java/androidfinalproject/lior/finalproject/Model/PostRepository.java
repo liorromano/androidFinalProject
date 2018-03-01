@@ -232,4 +232,19 @@ public class PostRepository {
 
         }
     }
+
+
+    public interface GetPostListener{
+        void onSuccess(Post post);
+    }
+
+    public void getPostByPostId(String postId, final GetPostListener listener)
+    {
+       PostFirebase.getPostById(postId, new PostFirebase.Callback<Post>() {
+           @Override
+           public void onComplete(Post data) {
+               listener.onSuccess(data);
+           }
+       });
+    }
 }

@@ -9,9 +9,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidfinalproject.lior.finalproject.Home.MainActivity;
 import androidfinalproject.lior.finalproject.Home.MainFragment;
 import androidfinalproject.lior.finalproject.Home.MainViewModel;
 import androidfinalproject.lior.finalproject.Login.LoginActivity;
@@ -64,6 +67,25 @@ public class ProfileFragment extends Fragment {
         ListView list = view.findViewById(R.id.profile_list_list);
         adapter = new PostsListAdapter();
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Post item = profilePostsList.get(position);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment postFragment = new PostDetailFragment();//the fragment you want to show
+                Bundle bundle = new Bundle();
+                bundle.putString("key",item.getId());
+                postFragment.setArguments(bundle);
+
+                fragmentTransaction
+                        .replace(R.id.container, postFragment);//R.id.content_frame is the layout you want to replace
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+
+        });
         progressBar = view.findViewById(R.id.profile_list_progressbar);
         progressBar.setVisibility(View.GONE);
 

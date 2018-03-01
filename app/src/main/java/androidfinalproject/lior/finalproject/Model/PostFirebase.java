@@ -130,4 +130,23 @@ public class PostFirebase {
         });
     }
 
+    public static void getPostById(String id,final Callback<Post> callback)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("posts").child(id);
+        ValueEventListener listener = myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot snap = dataSnapshot;
+                Post post = snap.getValue(Post.class);
+                callback.onComplete(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onComplete(null);
+            }
+        });
+    }
+
 }

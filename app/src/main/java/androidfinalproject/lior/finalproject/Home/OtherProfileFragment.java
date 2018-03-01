@@ -4,28 +4,27 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import java.util.LinkedList;
 import java.util.List;
 
+import androidfinalproject.lior.finalproject.Login.LoginActivity;
 import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.Model.User;
@@ -33,28 +32,23 @@ import androidfinalproject.lior.finalproject.Model.UserRepository;
 import androidfinalproject.lior.finalproject.Profile.PostDetailFragment;
 import androidfinalproject.lior.finalproject.R;
 
+/**
+ * Created by Lior on 06/02/2018.
+ */
 
-public class MainFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
+public class OtherProfileFragment extends Fragment {
 
-    List<Post> postsList = new LinkedList<>();
     PostsListAdapter adapter;
     ProgressBar progressBar;
+    String myValue;
 
+    private OnFragmentInteractionListener mListener;
     private MainViewModel postsListViewModel;
+    List<Post> postsList = new LinkedList<>();
+    List<Post> profilePostsList = new LinkedList<>();
 
-    public MainFragment() {
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EmployeeListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance() {
-       MainFragment fragment = new MainFragment();
+    public static OtherProfileFragment newInstance() {
+        OtherProfileFragment fragment = new OtherProfileFragment();
         return fragment;
     }
 
@@ -62,46 +56,109 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+        myValue = bundle.getString("key");
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_list, container, false);
-        ListView list = view.findViewById(R.id.mainlist_list);
+
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        ListView list = view.findViewById(R.id.profile_list_list);
         adapter = new PostsListAdapter();
         list.setAdapter(adapter);
-        progressBar = view.findViewById(R.id.mainlist_progressbar);
-        //MyTask task = new MyTask();
-        progressBar.setVisibility(View.GONE);
-        //task.execute("");
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Post item = postsList.get(position);
+                Post item = profilePostsList.get(position);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                Fragment otherProfileFragment = new OtherProfileFragment();//the fragment you want to show
+                Fragment postFragment = new PostDetailFragment();//the fragment you want to show
                 Bundle bundle = new Bundle();
-                bundle.putString("key",item.getuId());
-                otherProfileFragment.setArguments(bundle);
+                bundle.putString("key",item.getId());
+                postFragment.setArguments(bundle);
 
                 fragmentTransaction
-                        .replace(R.id.container, otherProfileFragment);//R.id.content_frame is the layout you want to replace
+                        .replace(R.id.container, postFragment);//R.id.content_frame is the layout you want to replace
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
 
         });
+        progressBar = view.findViewById(R.id.profile_list_progressbar);
+        progressBar.setVisibility(View.GONE);
+
+        final TextView name = (TextView)view.findViewById(R.id.tvDisplay_name);
+        final ImageView profileImage = (ImageView) view.findViewById(R.id.ivProfileImage);
+               UserRepository.instance.getUser(myValue, new UserRepository.GetUserCallback() {
+                   @Override
+                   public void onComplete(User user) {
+                       name.setText(user.getUserName());
+                       if (user.imageUrl != null && !user.imageUrl.isEmpty() && !user.imageUrl.equals(""))
+                       {
+                           UserRepository.instance.getImage(user.imageUrl, new PostRepository.GetImageListener() {
+                               @Override
+                               public void onSuccess(Bitmap image) {
+                                   profileImage.setImageBitmap(image);
+                               }
+
+                               @Override
+                               public void onFail() {
+
+                               }
+                           });
+                       }
+                   }
+
+                   @Override
+                   public void onCancel() {
+
+                   }
+               });
+
+        final Button logout = (Button) view.findViewById(R.id.logout_Btn);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserRepository.instance.logout();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        logout.setVisibility(View.GONE);
+
+        final Button ediProfile = (Button) view.findViewById(R.id.editProfile_btn);
+        ediProfile.setVisibility(View.GONE);
+
+         UserRepository.instance.whoLoggedIn(new UserRepository.whoLoggedInListener() {
+             @Override
+             public void answer(String answer) {
+                 if(answer.compareTo(myValue) == 0)
+                 {
+                     logout.setVisibility(View.VISIBLE);
+                     ediProfile.setVisibility(View.VISIBLE);
+                 }
+             }
+         });
+
+
 
         return view;
     }
 
+
+    private void setText()
+    {
+        TextView tv = (TextView)getView().findViewById(R.id.textView_posts);
+        int size = profilePostsList.size();
+        String textSize = Integer.toString(size);
+        tv.setText(textSize);
+    }
+
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(final Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -115,6 +172,22 @@ public class MainFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
                 postsList = posts;
+
+
+                        Post post;
+                        profilePostsList.clear();
+                       for(int i=0;i<postsList.size();i++)
+                       {
+                           post=postsList.get(i);
+                           if(post.uId.compareTo(myValue) == 0)
+                           {
+                               profilePostsList.add(post);
+
+                           }
+                       }
+                        setText();
+
+
                 if (adapter != null) adapter.notifyDataSetChanged();
             }
         });
@@ -126,16 +199,6 @@ public class MainFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         void onItemSelected(Post post);
     }
@@ -145,7 +208,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return postsList.size();
+            return profilePostsList.size();
         }
 
         @Override
@@ -162,7 +225,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int pos = (int)v.getTag();
-                Post post = postsList.get(pos);
+                Post post = profilePostsList.get(pos);
             }
         }
 
@@ -170,16 +233,14 @@ public class MainFragment extends Fragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null){
-                convertView = inflater.inflate(R.layout.posts_list_row,null);
+                convertView = inflater.inflate(R.layout.profile_list_row,null);
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.namerow_text);
-            TextView description = (TextView) convertView.findViewById(R.id.descriptionrow_text);
-            final ImageView postImage = (ImageView) convertView.findViewById(R.id.postrow_image);
-            final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.strow_progressBar);
-            final ImageView profileImage = (ImageView) convertView.findViewById(R.id.list_row_profile_image);
-            final Post post = postsList.get(position);
-            name.setText(post.name);
+            TextView description = (TextView) convertView.findViewById(R.id.profile_list_row_description_text);
+            final ImageView postImage = (ImageView) convertView.findViewById(R.id.profile_list_row_image);
+            final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.profile_list_row_progressBar);
+            final Post post = profilePostsList.get(position);
+
             description.setText(post.description);
             postImage.setTag(post.imageUrl);
             postImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
@@ -203,71 +264,12 @@ public class MainFragment extends Fragment {
                 });
             }
 
-            UserRepository.instance.getUser(post.uId, new UserRepository.GetUserCallback() {
-                @Override
-                public void onComplete(final User user) {
-
-                    if (user.imageUrl != null && !user.imageUrl.isEmpty() && !user.imageUrl.equals("")){
-                        profileImage.setTag(user.imageUrl);
-                        profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
-                        UserRepository.instance.getImage(user.imageUrl, new PostRepository.GetImageListener() {
-                            @Override
-                            public void onSuccess(Bitmap image) {
-                                String tagUrl =  profileImage.getTag().toString();
-                                if (tagUrl.equals(user.imageUrl)) {
-                                    profileImage.setImageBitmap(image);
-
-                                }
-                            }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-            });
-
             return convertView;
         }
     }
-
-
-    class MyTask extends AsyncTask<String, Integer, Double> {
-
-        @Override
-        protected Double doInBackground(String... strings) {
-            // do all the asynch jobs ...
-            for (int i=0;i<10;i++) {
-                Log.d("TAG", "performing task offline...");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                publishProgress(i);
-            }
-            return 10.0;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            Log.d("TAG","progress update execute on main thread");
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Double aDouble) {
-            Log.d("TAG","execute on main thread");
-            progressBar.setVisibility(View.GONE);
-            super.onPostExecute(aDouble);
-        }
-    }
-
 }
+
+
+
+
+
