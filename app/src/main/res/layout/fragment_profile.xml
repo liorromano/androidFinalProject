@@ -5,13 +5,6 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/relLayout1">
-        <include layout="@layout/top_profile_bar"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relLayout1">
 

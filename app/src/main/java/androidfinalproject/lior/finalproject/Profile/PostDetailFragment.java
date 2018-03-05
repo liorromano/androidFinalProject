@@ -73,7 +73,7 @@ public class PostDetailFragment extends Fragment{
                 name.setText(post.name);
                 description.setText(post.description);
                 postImage.setTag(post.imageUrl);
-                postImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
+                //postImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
 
                 if (post.imageUrl != null && !post.imageUrl.isEmpty() && !post.imageUrl.equals("")){
                     progressBar.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class PostDetailFragment extends Fragment{
 
                         if (user.imageUrl != null && !user.imageUrl.isEmpty() && !user.imageUrl.equals("")){
                             profileImage.setTag(user.imageUrl);
-                            profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
+                            //profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
                             UserRepository.instance.getImage(user.imageUrl, new PostRepository.GetImageListener() {
                                 @Override
                                 public void onSuccess(Bitmap image) {

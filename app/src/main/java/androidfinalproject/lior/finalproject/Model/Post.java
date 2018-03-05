@@ -21,6 +21,7 @@ public class Post {
     public long lastUpdated;
     public String uId;
     public String description;
+    public Boolean deleted = false;
 
 
     public String getId() {
@@ -71,6 +72,14 @@ public class Post {
         return lastUpdated;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     HashMap<String,Object> toJson(){
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);
@@ -79,6 +88,7 @@ public class Post {
         result.put("lastUpdated", lastUpdated);
         result.put("uId", uId);
         result.put("description", description);
+        result.put("deleted", deleted);
         return result;
     }
 }

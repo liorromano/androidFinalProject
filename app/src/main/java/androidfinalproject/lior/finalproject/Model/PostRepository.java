@@ -43,6 +43,10 @@ public class PostRepository {
         }*/
     }
 
+    public static void deletePost(String id) {
+        PostFirebase.deletePost(id);
+    }
+
     public interface GetImageListener{
         void onSuccess(Bitmap image);
         void onFail();
@@ -215,7 +219,8 @@ public class PostRepository {
                     editor.commit();
                 }
                 //return the complete student list to the caller
-                List<Post> postList = AppLocalStore.db.postDao().getAll();
+                //List<Post> postList = AppLocalStore.db.postDao().getAll();
+                List<Post> postList = AppLocalStore.db.postDao().getAllNotDeleted(false);
                 Log.d("TAG", "finish updatePostDataInLocalStorage in thread");
 
                 return postList;

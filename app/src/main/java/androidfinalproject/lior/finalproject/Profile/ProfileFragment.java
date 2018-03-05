@@ -226,13 +226,6 @@ public class ProfileFragment extends Fragment {
             return 0;
         }
 
-        class CBListener implements View.OnClickListener{
-            @Override
-            public void onClick(View v) {
-                int pos = (int)v.getTag();
-                Post post = profilePostsList.get(pos);
-            }
-        }
 
         @SuppressLint("NewApi")
         @Override
@@ -245,6 +238,24 @@ public class ProfileFragment extends Fragment {
             final ImageView postImage = (ImageView) convertView.findViewById(R.id.profile_list_row_image);
             final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.profile_list_row_progressBar);
             final Post post = profilePostsList.get(position);
+
+            final Button delete = convertView.findViewById(R.id.profile_list_row_deleteBtn);
+            delete.setTag(post.getId());
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String id = "";
+                    id = post.getId();
+                    String tagBtn = delete.getTag().toString();
+                    if (tagBtn.equals(id)) {
+                       // profilePostsList.remove(position);
+                        PostRepository.deletePost(id);
+                        if (adapter != null) adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
+
 
             description.setText(post.description);
             postImage.setTag(post.imageUrl);
@@ -272,6 +283,8 @@ public class ProfileFragment extends Fragment {
             return convertView;
         }
     }
+
+
 }
 
 

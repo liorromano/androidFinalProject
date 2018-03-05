@@ -28,6 +28,9 @@ import java.util.List;
  */
 
 public class PostFirebase {
+
+
+
     public interface Callback<T> {
         void onComplete(T data);
     }
@@ -147,6 +150,12 @@ public class PostFirebase {
                 callback.onComplete(null);
             }
         });
+    }
+
+    public static void deletePost(String id) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("posts").child(id);
+        myRef.child("deleted").setValue(true);
     }
 
 }

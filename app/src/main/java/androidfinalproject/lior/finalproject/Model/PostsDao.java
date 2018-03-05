@@ -16,6 +16,9 @@ public interface PostsDao {
     @Query("SELECT * FROM Post ORDER BY lastUpdated DESC")
     List<Post> getAll();
 
+    @Query("SELECT * FROM Post WHERE  deleted = :type ORDER BY lastUpdated DESC")
+    List<Post> getAllNotDeleted(Boolean type);
+
     @Query("SELECT * FROM Post WHERE id IN (:userIds)")
     List<Post> loadAllByIds(int[] userIds);
 

@@ -29,6 +29,7 @@ import androidfinalproject.lior.finalproject.Model.Post;
 import androidfinalproject.lior.finalproject.Model.PostRepository;
 import androidfinalproject.lior.finalproject.Model.User;
 import androidfinalproject.lior.finalproject.Model.UserRepository;
+import androidfinalproject.lior.finalproject.Profile.EditProfileActivity;
 import androidfinalproject.lior.finalproject.Profile.PostDetailActivity;
 import androidfinalproject.lior.finalproject.Profile.PostDetailFragment;
 import androidfinalproject.lior.finalproject.R;
@@ -83,6 +84,9 @@ public class OtherProfileFragment extends Fragment {
             }
 
         });
+
+
+
         progressBar = view.findViewById(R.id.profile_list_progressbar);
         progressBar.setVisibility(View.GONE);
 
@@ -125,8 +129,15 @@ public class OtherProfileFragment extends Fragment {
         });
         logout.setVisibility(View.GONE);
 
-        final Button ediProfile = (Button) view.findViewById(R.id.editProfile_btn);
-        ediProfile.setVisibility(View.GONE);
+        final Button editProfile = (Button) view.findViewById(R.id.editProfile_btn);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        editProfile.setVisibility(View.GONE);
 
          UserRepository.instance.whoLoggedIn(new UserRepository.whoLoggedInListener() {
              @Override
@@ -134,7 +145,8 @@ public class OtherProfileFragment extends Fragment {
                  if(answer.compareTo(myValue) == 0)
                  {
                      logout.setVisibility(View.VISIBLE);
-                     ediProfile.setVisibility(View.VISIBLE);
+                     editProfile.setVisibility(View.VISIBLE);
+
                  }
              }
          });
@@ -236,6 +248,11 @@ public class OtherProfileFragment extends Fragment {
             final ImageView postImage = (ImageView) convertView.findViewById(R.id.profile_list_row_image);
             final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.profile_list_row_progressBar);
             final Post post = profilePostsList.get(position);
+
+
+            final Button delete = convertView.findViewById(R.id.profile_list_row_deleteBtn);
+            delete.setVisibility(View.GONE);
+
 
             description.setText(post.description);
             postImage.setTag(post.imageUrl);

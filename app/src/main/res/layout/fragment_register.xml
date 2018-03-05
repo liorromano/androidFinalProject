@@ -37,6 +37,7 @@
             android:id="@+id/register_username_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAutofill="noExcludeDescendants"
             android:hint="Username" />
     </android.support.design.widget.TextInputLayout>
 
@@ -46,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +57,7 @@
             android:id="@+id/register_email_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAutofill="noExcludeDescendants"
             android:hint="Email" />
 
     </android.support.design.widget.TextInputLayout>
@@ -76,6 +78,7 @@
             android:id="@+id/register_password_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAutofill="noExcludeDescendants"
             android:hint="Password" />
     </android.support.design.widget.TextInputLayout>
 

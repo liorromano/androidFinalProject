@@ -90,7 +90,7 @@ public class RegisterFragment extends Fragment{
                 {
                     alert("password must contains 6 digits");
                 }
-                if(!isEmailValid(email.getText().toString()))
+                else if(!isEmailValid(email.getText().toString()))
                 {
                     alert("email not valid");
                 }
