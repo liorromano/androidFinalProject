@@ -131,6 +131,7 @@ public class RegisterFragment extends Fragment{
                                         }
                                     });
                                 } else {
+
                                     UserRepository.instance.addUser(user, answer);
                                     getActivity().setResult(RESAULT_SUCCESS);
                                     progressBar.setVisibility(GONE);

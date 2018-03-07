@@ -72,7 +72,7 @@ public class PostRepository {
 
                 }
 
-                //2. get all students records that where updated since last update date
+                //2. get all posts records that where updated since last update date
                 PostFirebase.getAllPostsAndObserve(lastUpdateDate, new PostFirebase.Callback<List<Post>>() {
                     @Override
                     public void onComplete(List<Post> data) {

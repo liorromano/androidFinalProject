@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 
-/**
- * Created by menachi on 26/12/2017.
- */
+
 
 @Entity
 public class Post {

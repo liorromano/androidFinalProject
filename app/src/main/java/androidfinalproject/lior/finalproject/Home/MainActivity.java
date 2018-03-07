@@ -50,15 +50,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
 
     }
 
-    public void setUpViewPage()
-    {
-        SectionPageAdapter sectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
-        sectionPageAdapter.addFragment(new MainFragment());
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(sectionPageAdapter);
-
-    }
 
     @Override
     public void onBackPressed() {

@@ -158,13 +158,6 @@ public class MainFragment extends Fragment {
             return 0;
         }
 
-        class CBListener implements View.OnClickListener{
-            @Override
-            public void onClick(View v) {
-                int pos = (int)v.getTag();
-                Post post = postsList.get(pos);
-            }
-        }
 
         @SuppressLint("NewApi")
         @Override
@@ -207,9 +200,9 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onComplete(final User user) {
 
+                    profileImage.setTag(user.imageUrl);
+                    profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
                     if (user.imageUrl != null && !user.imageUrl.isEmpty() && !user.imageUrl.equals("")){
-                        profileImage.setTag(user.imageUrl);
-                        profileImage.setImageDrawable(getContext().getDrawable(R.drawable.avatar));
                         UserRepository.instance.getImage(user.imageUrl, new PostRepository.GetImageListener() {
                             @Override
                             public void onSuccess(Bitmap image) {
@@ -226,6 +219,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     }
+
                 }
 
                 @Override

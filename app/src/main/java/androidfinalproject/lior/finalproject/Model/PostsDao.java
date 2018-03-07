@@ -8,9 +8,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-/**
- * Created by menachi on 27/12/2017.
- */
+
 @Dao
 public interface PostsDao {
     @Query("SELECT * FROM Post ORDER BY lastUpdated DESC")

@@ -123,7 +123,7 @@ public class AddFragment extends Fragment {
 
             }
         });
-        imageView = (ImageView) view.findViewById(R.id.editProfile_image);
+        imageView = (ImageView) view.findViewById(R.id.add_image);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
